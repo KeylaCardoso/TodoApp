@@ -5,3 +5,9 @@
 <p> The objective of the TodoApp application is to create a place where it is possible to set projects, their respective tasks, deadlines, description and status. 
 For the development of this application it was used Java language to set the controllers and models, and the Swing toolkit to create the graphical interface
 of the views<p>
+
+<p> An image of the main view created is presented below<p>
+
+<p align="center">
+  <img src="app/src/main/resources/tela_principal.PNG" width="350"
+</p>
