@@ -271,7 +271,7 @@ public class MainScreen extends javax.swing.JFrame {
             .addGroup(jPanelEmptyListLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelEmptyListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelEmptyListSubtitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+                    .addComponent(jLabelEmptyListSubtitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                     .addComponent(jLabelEmptyListTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelEmptyListIcon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -279,13 +279,13 @@ public class MainScreen extends javax.swing.JFrame {
         jPanelEmptyListLayout.setVerticalGroup(
             jPanelEmptyListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelEmptyListLayout.createSequentialGroup()
-                .addGap(153, 153, 153)
+                .addGap(168, 168, 168)
                 .addComponent(jLabelEmptyListIcon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelEmptyListTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelEmptyListSubtitle, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addContainerGap(142, Short.MAX_VALUE))
         );
 
         jPanel5.add(jPanelEmptyList, java.awt.BorderLayout.CENTER);
@@ -303,7 +303,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanelTasks, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,6 +363,8 @@ public class MainScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         int rowIndex = jTableTasks.rowAtPoint(evt.getPoint());
         int columnIndex = jTableTasks.columnAtPoint(evt.getPoint());
+        int projectIndex = jListProjects.getSelectedIndex();
+        Project project = (Project) projectsModel.get(projectIndex);
         Task task = taskModel.getTasks().get(rowIndex);
         
         switch(columnIndex) {
@@ -371,14 +373,31 @@ public class MainScreen extends javax.swing.JFrame {
                 taskController.update(task);
                 break;
             case 4:
+                TaskEditDialogScreen taskEditDialogScreen = 
+                       new TaskEditDialogScreen(this, rootPaneCheckingEnabled);
+                taskEditDialogScreen.setProject(project);
+                taskEditDialogScreen.setTask(task);
+
+                taskEditDialogScreen.setVisible(true);
+
+                taskEditDialogScreen.addWindowListener(new WindowAdapter() {
+
+                     public void windowClosed(WindowEvent e) {
+
+                         int projectIndex = jListProjects.getSelectedIndex();
+                         Project project = (Project) projectsModel.get(projectIndex);
+                         loadTasks(project.getId()); 
+
+                    }
+                });
                 
                 break;
+                
             case 5:
                 taskController.removeById(task.getId());
                 taskModel.getTasks().remove(task);
                 
-                int projectIndex = jListProjects.getSelectedIndex();
-                Project project = (Project) projectsModel.get(projectIndex);
+                
                 loadTasks(project.getId());
                 
                 break;
